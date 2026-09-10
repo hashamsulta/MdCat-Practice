@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MDCAT Practice</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <h1>MDCAT PRACTICE</h1>
+    <span class="tag" id="masthead-tag">loading…</span>
+  </header>
+
+  <!-- ===================== SETUP SCREEN ===================== -->
+  <main id="screen-setup">
+
+    <div class="section">
+      <p class="label">Year</p>
+      <div class="chips" id="year-chips"></div>
+    </div>
+
+    <div class="section">
+      <p class="label">Paper</p>
+      <div class="chips" id="paper-chips"></div>
+    </div>
+
+    <div class="section">
+      <p class="label">Subject</p>
+      <div class="chips" id="subject-chips"></div>
+    </div>
+
+    <div class="section">
+      <p class="label">Mode</p>
+      <div class="modes" id="mode-cards">
+        <button class="mode-card" data-mode="random" type="button">
+          <h3>Random quiz</h3>
+          <p>Shuffled questions from your filters. Pick how many.</p>
+        </button>
+        <button class="mode-card" data-mode="practice" type="button">
+          <h3>Practice test</h3>
+          <p>Goes in paper order, like sitting the real thing.</p>
+        </button>
+      </div>
+    </div>
+
+    <div class="section" id="count-section" style="display:none;">
+      <p class="label">How many questions</p>
+      <div class="count-row" id="count-chips"></div>
+    </div>
+
+    <div id="setup-notice"></div>
+
+    <div class="start-bar">
+      <span class="avail" id="avail-text"><b>0</b> questions match</span>
+      <button class="btn" id="start-btn" disabled type="button">Start</button>
+    </div>
+
+  </main>
+
+  <!-- ===================== QUIZ SCREEN ===================== -->
+  <main id="screen-quiz" style="display:none;">
+    <div class="quiz-head">
+      <div class="paper-name">
+        <span id="quiz-paper-label"></span>
+        <span id="quiz-progress-label"></span>
+      </div>
+      <div class="progress-track" id="progress-track"></div>
+    </div>
+
+    <p class="q-num" id="q-num"></p>
+    <p class="q-text" id="q-text"></p>
+    <div class="options" id="q-options"></div>
+
+    <p class="feedback-line" id="feedback-line"></p>
+
+    <button class="btn block" id="next-btn" type="button" disabled>Answer to continue</button>
+  </main>
+
+  <!-- ===================== RESULTS SCREEN ===================== -->
+  <main id="screen-results" style="display:none;">
+    <div class="score-block">
+      <div class="score-big" id="score-big"></div>
+      <div class="score-sub" id="score-sub"></div>
+    </div>
+
+    <div class="section">
+      <p class="label">By subject</p>
+      <div class="breakdown" id="breakdown"></div>
+    </div>
+
+    <div class="section" id="review-section">
+      <p class="label">Review missed questions</p>
+      <div id="review-list"></div>
+    </div>
+
+    <div class="result-actions">
+      <button class="btn ghost" id="retry-btn" type="button">Retry these</button>
+      <button class="btn" id="newquiz-btn" type="button">New quiz</button>
+    </div>
+  </main>
+
+  <p class="foot">Practice questions compiled from past MDCAT papers. For personal study use.</p>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
