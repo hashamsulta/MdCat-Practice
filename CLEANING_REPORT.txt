@@ -1,0 +1,29 @@
+MDCAT CLEANING / QA REPORT
+==========================
+Source 2024 records: 1080
+Source 2025 records: 1048
+Published 2024 records: 866
+Published 2025 records: 1040
+Published total: 1906
+Excluded distinct records: 222
+
+Exclusion reason occurrences (a record may have multiple reasons):
+- missing_answer: 136
+- answer_not_in_options: 136
+- no_answer_key_in_pdf: 130
+- ocr_review: 98
+- invalid_option_data: 63
+- needs_review: 7
+- diagram_question: 2
+- deleted_in_official_key: 2
+- multiple_official_answers_A_and_B: 1
+- all_options_awarded_by_official_key: 1
+- answer_key_not_present_on_key_page: 1
+- answer_key_points_to_missing_option: 1
+- diagram_options_not_text_extractable: 1
+
+Validation performed on published set:
+- Every published record has a non-empty question.
+- Every published record has A, B, C, and D option text.
+- Every published record has a non-null answer matching an available option.
+- No published record retains a source flags field.

@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f172a">
+  <title>MDCAT Question Bank</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand" data-nav="home">
+      <div class="brand-mark">M</div>
+      <div>
+        <div class="brand-title">MDCAT Question Bank</div>
+        <div class="brand-subtitle">2024–2025 • Practice • Tests • Revision</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <button class="nav-btn active" data-nav="home">Home</button>
+      <button class="nav-btn" data-nav="revision">Revision</button>
+      <button class="nav-btn" data-nav="history">History</button>
+      <button class="nav-btn" data-nav="editor">Edit</button>
+      <button class="icon-btn" id="themeBtn" title="Toggle theme">☾</button>
+    </nav>
+  </header>
+
+  <main id="app">
+    <section id="homeView" class="view active">
+      <div class="hero">
+        <div>
+          <span class="eyebrow">Your private study companion</span>
+          <h1>Practice MDCAT questions your way.</h1>
+          <p>Choose a year, paper and subject, then practice, take a random test, or revise questions you've already attempted.</p>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card"><strong id="totalCount">—</strong><span>Total MCQs</span></div>
+          <div class="stat-card"><strong id="paperCount">—</strong><span>Papers</span></div>
+          <div class="stat-card"><strong id="attemptedCount">0</strong><span>Attempted</span></div>
+        </div>
+      </div>
+
+      <div class="section-title-row">
+        <div>
+          <h2>Choose a year</h2>
+          <p class="muted">You can add 2023, 2026 and other papers later by replacing/updating the JSON file.</p>
+        </div>
+      </div>
+      <div class="year-grid" id="yearGrid"></div>
+
+      <div class="section-title-row">
+        <div>
+          <h2>Build a quiz</h2>
+          <p class="muted">“AS” means All Subjects — useful for mixed tests across Biology, Chemistry, Physics, English and Logical Reasoning.</p>
+        </div>
+      </div>
+
+      <div class="filters card">
+        <label>Year
+          <select id="homeYear"></select>
+        </label>
+        <label>Paper
+          <select id="homePaper"></select>
+        </label>
+        <label>Subject
+          <select id="homeSubject"></select>
+        </label>
+        <label>Mode
+          <select id="homeMode">
+            <option value="practice">Practice — answer shown immediately</option>
+            <option value="random">Random Test — mixed questions</option>
+            <option value="paper">Paper Test — keep paper order</option>
+            <option value="revision">Revision — attempted questions</option>
+          </select>
+        </label>
+        <label id="countWrap">Questions
+          <select id="homeCount">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50" selected>50</option>
+            <option value="100">100</option>
+            <option value="all">All available</option>
+          </select>
+        </label>
+        <button class="primary full" id="startQuizBtn">Start</button>
+      </div>
+
+      <div class="quick-actions">
+        <button class="card action-card" data-nav="revision"><span class="action-icon">↺</span><span><strong>Revision</strong><small>Review previously attempted MCQs</small></span></button>
+        <button class="card action-card" data-nav="history"><span class="action-icon">◷</span><span><strong>Attempt history</strong><small>See past attempts and scores</small></span></button>
+        <button class="card action-card" data-nav="editor"><span class="action-icon">✎</span><span><strong>Edit database</strong><small>Fix or update questions locally</small></span></button>
+      </div>
+    </section>
+
+    <section id="quizView" class="view">
+      <div class="quiz-top card">
+        <button class="ghost" id="exitQuizBtn">← Exit</button>
+        <div class="quiz-meta">
+          <span id="quizModeLabel"></span>
+          <span id="quizProgress"></span>
+        </div>
+        <button class="ghost" id="flagBtn">⚑ Flag</button>
+      </div>
+
+      <div class="progress-track"><div id="progressBar"></div></div>
+
+      <div class="question-shell">
+        <div class="question-card card">
+          <div class="question-tags">
+            <span id="qYearTag" class="tag"></span>
+            <span id="qPaperTag" class="tag"></span>
+            <span id="qSubjectTag" class="tag"></span>
+            <span id="qOriginalTag" class="tag accent"></span>
+          </div>
+          <h2 id="questionText">Loading…</h2>
+          <div id="options" class="options"></div>
+          <div id="explanation" class="answer-panel hidden"></div>
+        </div>
+
+        <aside class="quiz-side card">
+          <div class="side-title">Question palette</div>
+          <div id="palette" class="palette"></div>
+          <div class="side-hint">Green = correct, red = incorrect, blue = current.</div>
+        </aside>
+      </div>
+
+      <div class="quiz-actions card">
+        <button class="ghost" id="prevBtn">← Previous</button>
+        <div class="quiz-actions-center">
+          <span id="answeredLabel">0 answered</span>
+          <span id="timerLabel" class="timer hidden">00:00</span>
+        </div>
+        <button class="primary" id="nextBtn">Next →</button>
+      </div>
+    </section>
+
+    <section id="resultView" class="view">
+      <div class="result-hero card">
+        <span class="eyebrow">Attempt complete</span>
+        <h1 id="resultTitle">Your Result</h1>
+        <div class="score-big" id="resultScore">0%</div>
+        <p id="resultSummary"></p>
+      </div>
+      <div class="result-grid">
+        <div class="card metric"><strong id="resultCorrect">0</strong><span>Correct</span></div>
+        <div class="card metric"><strong id="resultWrong">0</strong><span>Wrong</span></div>
+        <div class="card metric"><strong id="resultSkipped">0</strong><span>Skipped</span></div>
+        <div class="card metric"><strong id="resultUnkeyed">0</strong><span>Unkeyed</span></div>
+      </div>
+      <div class="card result-actions">
+        <button class="primary" id="reviewResultBtn">Review answers</button>
+        <button class="ghost" id="retryResultBtn">Try again</button>
+        <button class="ghost" data-nav="home">Home</button>
+      </div>
+      <div id="resultDetails" class="card"></div>
+    </section>
+
+    <section id="revisionView" class="view">
+      <div class="page-heading">
+        <div>
+          <span class="eyebrow">Revision</span>
+          <h1>Questions you've attempted</h1>
+          <p class="muted">Revise mistakes first, or browse everything you've already attempted.</p>
+        </div>
+        <button class="primary" id="startRevisionBtn">Start revision</button>
+      </div>
+
+      <div class="card filters compact">
+        <label>Show
+          <select id="revisionFilter">
+            <option value="all">All attempted</option>
+            <option value="wrong" selected>Incorrect / needs revision</option>
+            <option value="correct">Correct</option>
+            <option value="unanswered">Never answered correctly</option>
+          </select>
+        </label>
+        <label>Year
+          <select id="revisionYear"></select>
+        </label>
+        <label>Subject
+          <select id="revisionSubject"></select>
+        </label>
+        <input id="revisionSearch" placeholder="Search question or paper…">
+      </div>
+
+      <div id="revisionList" class="list"></div>
+    </section>
+
+    <section id="historyView" class="view">
+      <div class="page-heading">
+        <div>
+          <span class="eyebrow">History</span>
+          <h1>Attempt history</h1>
+          <p class="muted">Every completed quiz is stored in this browser.</p>
+        </div>
+        <button class="ghost danger" id="clearHistoryBtn">Clear history</button>
+      </div>
+      <div id="historyList" class="list"></div>
+    </section>
+
+    <section id="editorView" class="view">
+      <div class="page-heading">
+        <div>
+          <span class="eyebrow">Database editor</span>
+          <h1>Edit questions</h1>
+          <p class="muted">Changes here are saved in this browser only. Use Export JSON to create an updated database you can publish to GitHub.</p>
+        </div>
+      </div>
+      <div class="editor-layout">
+        <div class="card editor-list-panel">
+          <div class="editor-toolbar">
+            <input id="editorSearch" placeholder="Search by question, paper or original number…">
+            <select id="editorYear"></select>
+            <select id="editorSubject"></select>
+          </div>
+          <div id="editorList" class="list slim"></div>
+        </div>
+        <div class="card editor-form-panel">
+          <div id="editorEmpty" class="empty">Select a question to edit.</div>
+          <form id="editorForm" class="hidden">
+            <div class="editor-fields">
+              <div class="field-row">
+                <label>Question number<input id="editOriginalNumber" type="number"></label>
+                <label>Year<input id="editYear" type="number"></label>
+              </div>
+              <label>Paper<input id="editPaper"></label>
+              <label>Subject<select id="editSubject">
+                <option>Biology</option><option>Chemistry</option><option>Physics</option><option>English</option><option>Logical Reasoning</option>
+              </select></label>
+              <label>Question<textarea id="editQuestion" rows="5"></textarea></label>
+              <div class="option-grid">
+                <label>A<textarea id="editA" rows="3"></textarea></label>
+                <label>B<textarea id="editB" rows="3"></textarea></label>
+                <label>C<textarea id="editC" rows="3"></textarea></label>
+                <label>D<textarea id="editD" rows="3"></textarea></label>
+                <label>E<textarea id="editE" rows="3"></textarea></label>
+              </div>
+              <label>Answer
+                <select id="editAnswer"><option value="">No key / unknown</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select>
+              </label>
+            </div>
+            <div class="editor-actions">
+              <button type="submit" class="primary">Save changes</button>
+              <button type="button" class="ghost" id="resetQuestionBtn">Reset this question</button>
+              <button type="button" class="ghost" id="exportJsonBtn">Export JSON</button>
+              <button type="button" class="ghost" id="importJsonBtn">Import JSON</button>
+              <input id="importJsonInput" type="file" accept=".json" class="hidden">
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card editor-note">
+        <strong>Publishing note:</strong> GitHub Pages is static. The editor can prepare an updated JSON file, but it cannot write back to GitHub automatically. After exporting, replace <code>questions.json</code> in your repository with the exported file and commit the change.
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
